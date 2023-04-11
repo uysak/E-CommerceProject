@@ -1,4 +1,5 @@
-﻿using Entity.Concrete;
+﻿using Core.Entities.Concrete;
+using Entity.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,65 @@ namespace DataAccess.Context
         public static void Initialize(ECommerceContext _db)
         {
             AddDefaultCategories(_db);
+            AddDefaultOperationClaims(_db);
+            AddDefaultRoles(_db);
+        }
+
+        private static void AddDefaultOperationClaims(ECommerceContext _db)
+        {
+            if (_db.OperationClaims.Any())
+            {
+                return;
+            }
+
+            _db.OperationClaims.Add(new OperationClaim
+            {
+                Name = "AddProduct"
+            });
+
+            _db.OperationClaims.Add(new OperationClaim
+            {
+                Name = "UpdateProduct"
+            });
+
+            _db.OperationClaims.Add(new OperationClaim
+            {
+                Name = "DeleteProduct"
+            });
+
+            _db.SaveChangesAsync();
+
+        }
+
+        private static void AddDefaultRoles(ECommerceContext _db)
+        {
+            if (_db.Roles.Any())
+            {
+                return;
+            }
+
+            _db.Roles.Add(new Role
+            {
+                Name = "NormalUser"
+            });
+
+            _db.Roles.Add(new Role
+            {
+                Name = "StoreAdmin"
+            });
+
+            _db.Roles.Add(new Role
+            {
+                Name = "StoreModerator"
+            });
+
+            _db.Roles.Add(new Role
+            {
+                Name = "PlatformAdmin"
+            });
+
+            _db.SaveChangesAsync();
+
         }
 
         private static void AddDefaultCategories(ECommerceContext _db)

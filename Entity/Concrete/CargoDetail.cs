@@ -1,4 +1,4 @@
-﻿using Entity.Abstract;
+﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,11 +15,17 @@ namespace Entity.Concrete
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int FirmId { get; set; }
+        public int ProductId { get; set; }
         public bool HasFee { get; set; }
-        public double? Price { get; set; }
+        public double Desi { get; set; }
         public double? ExtraCharge { get; set; }
+        public double CalculatedPrice { get; set; }
+
 
         [ForeignKey("FirmId")]
         public CargoFirm CargoFirm { get; set; }
+
+        [ForeignKey("ProductId")]
+        public Product Product { get; set; }
     }
 }

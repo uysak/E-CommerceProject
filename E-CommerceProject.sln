@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\Da
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Entity\Entity.csproj", "{32D3E020-32A3-4418-8E57-79F0175E439C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "E-CommerceAPI", "E-CommerceAPI\E-CommerceAPI.csproj", "{4E052F5B-62AE-403F-9DCE-D0CBC47AAB46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "E-CommerceAPI", "E-CommerceAPI\E-CommerceAPI.csproj", "{4E052F5B-62AE-403F-9DCE-D0CBC47AAB46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{700D710E-DE2C-4FB8-BC10-45718248BFEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{4E052F5B-62AE-403F-9DCE-D0CBC47AAB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E052F5B-62AE-403F-9DCE-D0CBC47AAB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E052F5B-62AE-403F-9DCE-D0CBC47AAB46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{700D710E-DE2C-4FB8-BC10-45718248BFEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{700D710E-DE2C-4FB8-BC10-45718248BFEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{700D710E-DE2C-4FB8-BC10-45718248BFEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{700D710E-DE2C-4FB8-BC10-45718248BFEC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,4 @@
-﻿using Entity.Abstract;
+﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -20,22 +20,15 @@ namespace Entity.Concrete
 
         [MaxLength(1000)]
         public string Description { get; set; }
-        
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-        public double ProductRate { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; }
+        public int CargoFirmId { get; set; }
 
-        public int CargoDetailId { get; set; }
-        public int CategoryId { get; set; }
-        
+        [ForeignKey("CargoFirmId")]
+        public CargoFirm CargoFirm { get; set; }
 
-        [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
-
-        [ForeignKey("CargoDetailId")]
-        public CargoDetail CargoDetail { get; set; }
     }
 
 }

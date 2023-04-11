@@ -1,4 +1,4 @@
-﻿using Entity.Abstract;
+﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +14,7 @@ namespace Entity.Concrete
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         [MaxLength(70)]
         public string FirmName { get; set; }
         public string SiteUrl { get; set; }

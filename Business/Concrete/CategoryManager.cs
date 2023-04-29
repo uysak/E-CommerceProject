@@ -1,24 +1,33 @@
 ﻿using Business.Abstract;
+using Business.Helpers;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entity.Concrete;
 using Entity.DTOs.CategoryDTOs;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IResult = Core.Utilities.Results.IResult;
 
 namespace Business.Concrete
 {
     public class CategoryManager : ICategoryService
     {
         ICategoryDal _categoryDal;
+        ICategoryImageService _categoryImageService;
+        IImageService _imageService;
+        CategoryValidationHelper _validationHelper;
 
-        public CategoryManager(ICategoryDal categoryDal)
+        public CategoryManager(ICategoryDal categoryDal, IImageService imageService, ICategoryImageService categoryImageService)
         {
             _categoryDal = categoryDal;
+            _validationHelper = new CategoryValidationHelper(this);
+            _imageService = imageService;
+            _categoryImageService = categoryImageService;
         }
 
         public IDataResult<List<Category>> GetAllCategories()
@@ -31,22 +40,41 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Category>>(result);
         }
 
+        public IDataResult<Category> GetByCategoryName(string categoryName)
+        {
+            var result = _categoryDal.Get(s=>s.CategoryName == categoryName);
+            if (result == null)
+            {
+                return new ErrorDataResult<Category>("Veri yok");
+            }
+            return new SuccessDataResult<Category>(result);
+        }
+        public IDataResult<Category> GetById(int id)
+        {
+            var result = _categoryDal.Get(s => s.Id == id);
+            if (result == null)
+            {
+                return new ErrorDataResult<Category>("Veri yok");
+            }
+            return new SuccessDataResult<Category>(result);
+        }
+
         public IResult CreateCategory(Category category)
         {
-            var result = BusinessRules.Run(CheckIfCategoryExists(category.CategoryName));
+
+            var result = BusinessRules.Run(_validationHelper.CheckIfCategoryExists(category.CategoryName));
 
             if (result != null)
             {
                 return new ErrorResult(result.Message);
             }
-
+            
             _categoryDal.Add(category);
             return new SuccessResult();
         }
-
         public IResult DeleteCategory(int id)
         {
-            var result = BusinessRules.Run(CheckIfCategoryNotExist(id));
+            var result = BusinessRules.Run(_validationHelper.CheckIfCategoryNotExist(id));
 
             if (result != null)
             {
@@ -57,14 +85,14 @@ namespace Business.Concrete
             _categoryDal.Delete(deletedCategory);
             return new SuccessResult();
         }
-        public IResult UpdateCategory(Category category)
+        public IResult UpdateCategory(int id, Category category)
         {
-            var result = BusinessRules.Run(CheckIfCategoryNotExist(category.Id));
+            var result = BusinessRules.Run(_validationHelper.CheckIfCategoryNotExist(id));
 
-            var updatedCategory = _categoryDal.Get(s => s.Id == category.Id);
+            var updatedCategory = _categoryDal.Get(s => s.Id == id);
 
-            updatedCategory.CategoryImg = category.CategoryImg == default ? updatedCategory.CategoryImg : category.CategoryImg;
             updatedCategory.CategoryName = category.CategoryName == default ? updatedCategory.CategoryName : category.CategoryName;
+
 
             if (result != null)
             {
@@ -74,28 +102,5 @@ namespace Business.Concrete
             _categoryDal.Update(updatedCategory);
             return new SuccessResult();
         }
-
-        public IResult CheckIfCategoryExists(string categoryName)
-        {
-            var result = _categoryDal.Get(s => s.CategoryName == categoryName);
-
-            if(result != null)
-            {
-                return new ErrorResult("Category Already Exist");
-            }
-            return new SuccessResult("Category Not Exist");
-        }
-
-        public IResult CheckIfCategoryNotExist(int id)
-        {
-            var result = _categoryDal.Get(s => s.Id == id);
-
-            if (result == null)
-            {
-                return new ErrorResult("Category Not Exist");
-            }
-            return new SuccessResult("Category Already Exist");
-        }
-
     }
 }

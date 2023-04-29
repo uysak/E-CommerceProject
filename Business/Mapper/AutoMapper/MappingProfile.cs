@@ -19,7 +19,7 @@ namespace Business.Mapper.AutoMapper
                 .ForMember(dest => dest.Id, opt => opt.Ignore()).ReverseMap();
 
             CreateMap<CategoryForCreateDto, Category>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore()).ReverseMap();
+                .ForMember(dest => dest.Id, opt => opt.Ignore()).ForMember(dest=> dest.CategoryImg, opt=> opt.Ignore()).ReverseMap();
 
             CreateMap<CargoFirmForCreateDto, CargoFirm>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore()).ReverseMap();

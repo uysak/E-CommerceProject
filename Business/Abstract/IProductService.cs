@@ -12,6 +12,10 @@ namespace Business.Abstract
     public interface IProductService
     {
         public IDataResult<List<Product>> GetAllProducts();
+        public IDataResult<Product> GetById(int id);
+
+        public IDataResult<Product> GetByProductName(string productName);
+
         public IResult CreateProduct(Product product);
         public IResult DeleteProduct(int productId);
         public IResult UpdateProduct(Product product);

@@ -55,6 +55,7 @@ namespace E_CommerceAPI.Controllers
             return Ok(result);
         }
 
+
         [HttpPut]
         public IActionResult UpdateCategory(int categoryId, CategoryForUpdateDto categoryDto)
         {
@@ -62,7 +63,7 @@ namespace E_CommerceAPI.Controllers
             var category = _mapper.Map<Category>(categoryDto);
             category.Id = categoryId;
 
-            var result = _categoryService.UpdateCategory(category);
+            var result = _categoryService.UpdateCategory(categoryId,category);
             if (!result.Success)
             {
                 return BadRequest(result);

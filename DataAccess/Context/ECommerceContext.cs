@@ -29,9 +29,6 @@ namespace DataAccess.Context
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
- 
-
-
-
+        public DbSet<ProductImage> ProductImages { get; set; }
     }
 }

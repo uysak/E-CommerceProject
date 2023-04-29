@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Concrete
 {
-    public class ProductImage : Image
+    public class ProductImage : Image, IEntity
     {
         public int ProductId { get; set; }
 

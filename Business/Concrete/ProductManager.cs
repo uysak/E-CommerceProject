@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Helpers;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -14,10 +15,11 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         IProductDal _productDal;
-
+        ProductValidationHelper _validationHelper;
         public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
+            _validationHelper = new ProductValidationHelper(this);
         }
 
         public IDataResult<List<Product>> GetAllProducts()
@@ -29,10 +31,28 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<List<Product>>(result);
         }
+        public IDataResult<Product> GetById(int id)
+        {
+            var result = _productDal.Get(s=>s.Id == id);
+            if (result == null)
+            {
+                return new ErrorDataResult<Product>("Veri yok");
+            }
+            return new SuccessDataResult<Product>(result);
+        }
+        public IDataResult<Product> GetByProductName(string productName)
+        {
+            var result = _productDal.Get(s => s.Name == productName);
+            if (result == null)
+            {
+                return new ErrorDataResult<Product>("Veri yok");
+            }
+            return new SuccessDataResult<Product>(result);
+        }
 
         public IResult CreateProduct(Product product)
         {
-            var result = BusinessRules.Run(CheckIfProductExists(product.Name));
+            var result = BusinessRules.Run(_validationHelper.CheckIfProductExists(product.Name));
 
             if (result != null)
             {
@@ -45,7 +65,7 @@ namespace Business.Concrete
 
         public IResult DeleteProduct(int id)
         {
-            var result = BusinessRules.Run(CheckIfProductNotExist(id));
+            var result = BusinessRules.Run(_validationHelper.CheckIfProductNotExist(id));
 
             if (result != null)
             {
@@ -58,7 +78,7 @@ namespace Business.Concrete
         }
         public IResult UpdateProduct(Product product)
         {
-            var result = BusinessRules.Run(CheckIfProductNotExist(product.Id));
+            var result = BusinessRules.Run(_validationHelper.CheckIfProductNotExist(product.Id));
 
             var updatedProduct = _productDal.Get(s => s.Id == product.Id);
             
@@ -71,28 +91,6 @@ namespace Business.Concrete
 
             _productDal.Update(updatedProduct);
             return new SuccessResult();
-        }
-
-        public IResult CheckIfProductExists(string productName)
-        {
-            var result = _productDal.Get(s => s.Name == productName);
-
-            if(result != null)
-            {
-                return new ErrorResult("Product Already Exist");
-            }
-            return new SuccessResult("Product Not Exist");
-        }
-
-        public IResult CheckIfProductNotExist(int id)
-        {
-            var result = _productDal.Get(s => s.Id == id);
-
-            if (result == null)
-            {
-                return new ErrorResult("Product Not Exist");
-            }
-            return new SuccessResult("Product Already Exist");
         }
 
     }

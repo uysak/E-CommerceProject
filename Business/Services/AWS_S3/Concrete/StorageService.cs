@@ -17,6 +17,8 @@ namespace Business.Services.AWS_S3.Concrete
     using Microsoft.Extensions.Configuration;
     using Amazon.Runtime;
     using Microsoft.EntityFrameworkCore.Metadata.Internal;
+    using Core.Utilities.Results;
+    using System.Net;
 
     namespace AwsS3.Services
     {
@@ -84,6 +86,43 @@ namespace Business.Services.AWS_S3.Concrete
                 }
                 return response;
             }
+
+            public async Task<IResult> DeleteFile(string objectKey)
+            {
+                var awsCredentialsValues = new AwsCredentials()
+                {
+                    AccessKey = _config["AwsConfiguration:AWSAccessKey"],
+                    SecretKey = _config["AwsConfiguration:AWSSecretKey"]
+                };
+
+                var credentials = new BasicAWSCredentials(awsCredentialsValues.AccessKey, awsCredentialsValues.SecretKey);
+
+                var config = new AmazonS3Config()
+                {
+                    RegionEndpoint = Amazon.RegionEndpoint.EUCentral1
+                };
+
+                try
+                {
+                    using var client = new AmazonS3Client(credentials, config);
+
+                    var deleteObjectRequest = new Amazon.S3.Model.DeleteObjectRequest()
+                    {
+                        BucketName = "ecommerce-demo1",
+                        Key = objectKey,
+                    };
+
+                    var response = await client.DeleteObjectAsync(deleteObjectRequest);
+
+                    return new SuccessResult();
+                }
+                catch (Exception ex)
+                {
+                    // hata yönetimi yapılabilir
+                    return new ErrorResult();
+                }
+            }
+
 
 
         }

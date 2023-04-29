@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Helpers;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -14,10 +15,11 @@ namespace Business.Concrete
     public class CargoFirmManager : ICargoFirmService
     {
         ICargoFirmDal _cargoFirmDal;
-
+        CargoFirmValidationHelper _validationHelper;
         public CargoFirmManager(ICargoFirmDal cargoFirmDal)
         {
             _cargoFirmDal = cargoFirmDal;
+            _validationHelper = new CargoFirmValidationHelper(this);
         }
 
         public IDataResult<List<CargoFirm>> GetAll()
@@ -30,9 +32,29 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CargoFirm>>(result);
         }
 
+        public IDataResult<CargoFirm> GetByFirmName(string firmName)
+        {
+            var result = _cargoFirmDal.Get(s=>s.FirmName == firmName);
+            if (result == null)
+            {
+                return new ErrorDataResult<CargoFirm>("Veri yok");
+            }
+            return new SuccessDataResult<CargoFirm>(result);
+        }
+
+        public IDataResult<CargoFirm> GetById(int id)
+        {
+            var result = _cargoFirmDal.Get(s => s.Id == id);
+            if (result == null)
+            {
+                return new ErrorDataResult<CargoFirm>("Veri yok");
+            }
+            return new SuccessDataResult<CargoFirm>(result);
+        }
+
         public IResult CreateCargoFirm(CargoFirm cargoFirm)
         {
-            var result = BusinessRules.Run(CheckIfCargoFirmExists(cargoFirm.FirmName));
+            var result = BusinessRules.Run(_validationHelper.CheckIfCargoFirmExists(cargoFirm.FirmName));
 
             if (result != null)
             {
@@ -45,7 +67,7 @@ namespace Business.Concrete
 
         public IResult DeleteCargoFirm(int id)
         {
-            var result = BusinessRules.Run(CheckIfCargoFirmNotExist(id));
+            var result = BusinessRules.Run(_validationHelper.CheckIfCargoFirmNotExist(id));
 
             if (result != null)
             {
@@ -58,7 +80,7 @@ namespace Business.Concrete
         }
         public IResult UpdateCargoFirm(CargoFirm cargoFirm)
         {
-            var result = BusinessRules.Run(CheckIfCargoFirmNotExist(cargoFirm.Id));
+            var result = BusinessRules.Run(_validationHelper.CheckIfCargoFirmNotExist(cargoFirm.Id));
 
             var updatedCargoFirm = _cargoFirmDal.Get(s => s.Id == cargoFirm.Id);
 
@@ -74,29 +96,5 @@ namespace Business.Concrete
             _cargoFirmDal.Update(updatedCargoFirm);
             return new SuccessResult();
         }
-
-        public IResult CheckIfCargoFirmExists(string firmName)
-        {
-            var result = _cargoFirmDal.Get(s => s.FirmName == firmName);
-
-            if (result != null)
-            {
-                return new ErrorResult("Cargo Firm Already Exist");
-            }
-            return new SuccessResult("Cargo Firm Not Exist");
-        }
-
-        public IResult CheckIfCargoFirmNotExist(int id)
-        {
-            var result = _cargoFirmDal.Get(s => s.Id == id);
-
-            if (result == null)
-            {
-                return new ErrorResult("Cargo Firm Not Exist");
-            }
-            return new SuccessResult("Cargo Firm Already Exist");
-        }
-
     }
-
 }

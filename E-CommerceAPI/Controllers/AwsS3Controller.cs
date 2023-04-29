@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Services.AWS_S3.Abstract;
 using Business.Services.AWS_S3.Entity;
+using Entity.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_CommerceAPI.Controllers
@@ -11,70 +12,85 @@ namespace E_CommerceAPI.Controllers
     {
         private readonly IStorageService _storageService;
         private readonly IConfiguration _config;
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IProductImageService _productImageService;
 
-        private readonly IFileService _fileService;
+        private readonly IImageService _imageService;
 
         public AwsS3Controller(
-            ILogger<WeatherForecastController> logger,
             IConfiguration config,
             IStorageService storageService,
-            IFileService fileService)
+            IImageService imageService,
+            IProductImageService productImageService)
         {
-            _logger = logger;
             _config = config;
             _storageService = storageService;
-            _fileService = fileService;
+            _imageService = imageService;
+            _productImageService = productImageService;
         }
 
         [HttpPost("UploadProductImage")]
-        public async Task<IActionResult> UploadProductImage(IFormFileCollection images,int productId)
+        public async Task<IActionResult> UploadProductImage(IFormFileCollection images, int productId)
         {
             // Process file
-            var result = _fileService.UploadProductImages(images, productId);
-            if(result == null)
+            var result = _imageService.UploadProductImage(images, productId);
+
+            if (result == null)
+            {
+                return BadRequest();
+            }
+
+            return Ok(result);
+        }
+
+        [HttpDelete("DeleteProductImage")]
+        public async Task<IActionResult> DeleteProductImage(string objectKey)
+        {
+            // Process file
+            var result = _imageService.DeleteProductImage(objectKey);
+
+            if (result == null)
             {
                 return BadRequest();
             }
             return Ok(result);
-
         }
 
 
-        [HttpPost("UploadCategoryImage")]
-        public async Task<IActionResult> UploadCategoryImage(IFormFile file, string categoryName)
-        {
-            // Process file
-            await using var memoryStream = new MemoryStream();
-            await file.CopyToAsync(memoryStream);
 
-            var fileExt = Path.GetExtension(file.FileName);
-            var docName = $"{Guid.NewGuid()}{fileExt}";
+       //[HttpPost("UploadCategoryImage")]
+       // public async Task<IActionResult> UploadCategoryImage(IFormFile file, string categoryName)
+       // {
+       //     // Process file
+       //     await using var memoryStream = new MemoryStream();
+       //     await file.CopyToAsync(memoryStream);
 
-            string prefix = "CategoryImages/" + categoryName + "/";
+       //     var fileExt = Path.GetExtension(file.FileName);
+       //     var docName = $"{Guid.NewGuid()}{fileExt}";
 
-            // call server
+       //     string prefix = "CategoryImages/" + categoryName + "/";
 
-            var s3Obj = new S3Object()
-            {
-                BucketName = "ecommerce-demo1",
-                InputStream = memoryStream,
-                Name = docName,
-                Prefix = prefix
-            };
+       //     // call server
 
-            var cred = new AwsCredentials()
-            {
-                AccessKey = _config["AwsConfiguration:AWSAccessKey"],
-                SecretKey = _config["AwsConfiguration:AWSSecretKey"]
-            };
+       //     var s3Obj = new S3Object()
+       //     {
+       //         BucketName = "ecommerce-demo1",
+       //         InputStream = memoryStream,
+       //         Name = docName,
+       //         Prefix = prefix
+       //     };
 
-            var result = _storageService.UploadFile(s3Obj);
-            // 
-            return Ok(result);
+       //     var cred = new AwsCredentials()
+       //     {
+       //         AccessKey = _config["AwsConfiguration:AWSAccessKey"],
+       //         SecretKey = _config["AwsConfiguration:AWSSecretKey"]
+       //     };
 
-        }
+       //     var result = _storageService.UploadFile(s3Obj);
+       //     // 
+       //     return Ok(result);
 
+       // }
 
+ 
     }
 }

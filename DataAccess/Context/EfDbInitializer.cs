@@ -19,6 +19,7 @@ namespace DataAccess.Context
         public static void Initialize(ECommerceContext _db)
         {
             AddDefaultCategories(_db);
+            AddDefaultCategoryImages(_db);
             AddDefaultOperationClaims(_db);
             AddDefaultRoles(_db);
         }
@@ -45,7 +46,7 @@ namespace DataAccess.Context
                 Name = "DeleteProduct"
             });
 
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
 
         }
 
@@ -76,7 +77,7 @@ namespace DataAccess.Context
                 Name = "PlatformAdmin"
             });
 
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
 
         }
 
@@ -90,46 +91,96 @@ namespace DataAccess.Context
             _db.Categories.Add(new Category
             {
                 CategoryName = "Elektronik",
-                CategoryImg = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/Electronic/categoryElectronic.jpg"
             });
 
             _db.Categories.Add(new Category
             {
                 CategoryName = "Giyim & Moda",
-                CategoryImg = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/ClothingAndFashion/categoryClothingandFashion.jpeg"
             });
 
             _db.Categories.Add(new Category
             {
                 CategoryName = "Spor & Fitness",
-                CategoryImg = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/SportAndFitness/categorySportAndFitness.jpg"
             });
 
             _db.Categories.Add(new Category
             {
                 CategoryName = "Araç & Gereç",
-                CategoryImg = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/ToolsAndEquipment/categoryToolsAndEquipment.jpg"
             });
 
             _db.Categories.Add(new Category
             {
                 CategoryName = "Kitap & Dergi",
-                CategoryImg = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/BookAndMagazine/categoryBookAndMagazine.jpg"
             });
 
             _db.Categories.Add(new Category
             {
                 CategoryName = "Güzellik & Kişisel Bakım",
-                CategoryImg = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/BeautyAndPersonalCare/categoryBeautyandPersonalCare.jpg"
             });
 
             _db.Categories.Add(new Category
             {
                 CategoryName = "Mobilya & Ev Eşyaları",
-                CategoryImg = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/FurnitureandHomeAppliance/categoryFurnitureandHomeAppliances.jpg"
             });
 
-            _db.SaveChangesAsync();
+            _db.SaveChanges();
+
+        }
+
+        private static void AddDefaultCategoryImages(ECommerceContext _db)
+        {
+            if (_db.CategoryImages.Any())
+            {
+                return;
+            }
+            _db.CategoryImages.Add(new CategoryImage
+            {
+                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/Electronic/categoryElectronic.jpg",
+                CategoryId = 1,
+                ObjectKey = "CategoryImages/1/categoryElectronic.jpg"
+            });
+
+            _db.CategoryImages.Add(new CategoryImage
+            {
+                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/2/categoryClothingandFashion.jpeg",
+                CategoryId = 2,
+                ObjectKey = "CategoryImages/2/categoryClothingandFashion.jpeg"
+            });
+
+            _db.CategoryImages.Add(new CategoryImage
+            {
+                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/3/categorySportAndFitness.jpg",
+                CategoryId = 3,
+                ObjectKey = "CategoryImages/3/categorySportAndFitness.jpg"
+            });
+
+            _db.CategoryImages.Add(new CategoryImage
+            {
+                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/4/categoryToolsAndEquipment.jpg",
+                CategoryId = 4,
+                ObjectKey = "CategoryImages/4/categoryToolsAndEquipment.jpg"
+            });
+
+            _db.CategoryImages.Add(new CategoryImage
+            {
+                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/5/categoryBookAndMagazine.jpg",
+                CategoryId = 5,
+                ObjectKey = "CategoryImages/5/categoryBookAndMagazine.jpg"
+            });
+            _db.CategoryImages.Add(new CategoryImage
+            {
+                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/6/categoryBeautyandPersonalCare.jpg",
+                CategoryId = 6,
+                ObjectKey = "CategoryImages/6/categoryBeautyandPersonalCare.jpg"
+            }); 
+            _db.CategoryImages.Add(new CategoryImage
+            {
+                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/7/categoryFurnitureandHomeAppliances.jpg",
+                CategoryId = 7,
+                ObjectKey = "CategoryImages/7/categoryFurnitureandHomeAppliances.jpg"
+            });
+
+            _db.SaveChanges();
 
         }
 

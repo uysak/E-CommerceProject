@@ -13,10 +13,12 @@ namespace E_CommerceAPI.Controllers
     public class CategoryImageController : Controller
     {
         IImageService _imageService;
+        ICategoryImageService _categoryImageService;
 
-        public CategoryImageController(IImageService imageService)
+        public CategoryImageController(IImageService imageService,ICategoryImageService categoryImageService)
         {
             _imageService = imageService;
+            _categoryImageService = categoryImageService;
         }
 
         [HttpPost("UploadProductImage")]
@@ -45,7 +47,5 @@ namespace E_CommerceAPI.Controllers
             }
             return Ok(result);
         }
-
-
     }
 }

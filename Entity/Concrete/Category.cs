@@ -18,6 +18,6 @@ namespace Entity.Concrete
         [MaxLength(100)]
         [Required]
         public string CategoryName { get; set; }
-
+        public CategoryImage CategoryImage { get; set; }
     }
 }

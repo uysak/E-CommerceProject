@@ -1,0 +1,19 @@
+﻿@model List<CategoryViewModel>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="row">
+    @foreach (var category in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img class="card-img-top" src="@category.CategoryImage" alt="@category.CategoryName">
+                <div class="card-body">
+                    <h5 class="card-title">@category.CategoryName</h5>
+                </div>
+            </div>
+        </div>
+    }
+</div>

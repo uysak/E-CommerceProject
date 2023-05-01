@@ -30,14 +30,24 @@ namespace Business.Concrete
             _categoryImageService = categoryImageService;
         }
 
-        public IDataResult<List<Category>> GetAllCategories()
+        public IDataResult<List<CategoryDetailDto>> GetAllCategories()
         {
-            var result = _categoryDal.GetAll();
-            if(result == null || result.Count == 0)
+            var categories = _categoryDal.GetCategoryDetail();
+
+            var details = categories.Select(s =>
+                new CategoryDetailDto
+                {
+                    Id = s.Id,
+                    CategoryName = s.CategoryName,
+                    CategoryImage = s.CategoryImage.ObjectUrl
+                }).ToList();
+
+
+            if(categories == null || categories.Count == 0)
             {
-                return new ErrorDataResult<List<Category>>("Veri yok");
+                return new ErrorDataResult<List<CategoryDetailDto>>("Veri yok");
             }
-            return new SuccessDataResult<List<Category>>(result);
+            return new SuccessDataResult<List<CategoryDetailDto>>(details);
         }
 
         public IDataResult<Category> GetByCategoryName(string categoryName)

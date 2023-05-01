@@ -4,6 +4,7 @@ using Entity.Concrete;
 using Entity.DTOs.CategoryDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace E_CommerceAPI.Controllers
 {
@@ -28,6 +29,7 @@ namespace E_CommerceAPI.Controllers
             {
                 return NotFound();
             }
+
             return Ok(categories);
         }
 

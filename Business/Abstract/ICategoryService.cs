@@ -13,7 +13,7 @@ namespace Business.Abstract
 {
     public interface ICategoryService
     {
-        public IDataResult<List<Category>> GetAllCategories();
+        public IDataResult<List<CategoryDetailDto>> GetAllCategories();
         public IDataResult<Category> GetById(int id);
         public IDataResult<Category> GetByCategoryName(string categoryName);
         public IResult CreateCategory(Category category);

@@ -35,8 +35,8 @@ namespace E_CommerceAPI.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("DeleteProductImage")]
-        public async Task<IActionResult> DeleteProductImage(string objectKey)
+        [HttpDelete("DeleteCategoryImage")]
+        public async Task<IActionResult> DeleteCategoryImage(string objectKey)
         {
             // Process file
             var result = _imageService.DeleteCategoryImage(objectKey);

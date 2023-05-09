@@ -13,12 +13,14 @@ namespace E_CommerceAPI.Controllers
     public class CategoryController : ControllerBase
     {
         ICategoryService _categoryService;
+        IImageService _imageService;
         IMapper _mapper;
 
-        public CategoryController(ICategoryService categoryService, IMapper mapper)
+        public CategoryController(ICategoryService categoryService, IMapper mapper, IImageService imageService)
         {
             _categoryService = categoryService;
             _mapper = mapper;
+            _imageService = imageService;
         }
 
         [HttpGet]
@@ -34,15 +36,21 @@ namespace E_CommerceAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCategory(CategoryForCreateDto categoryDto)
+        public IActionResult CreateCategory([FromForm]IFormFile image, [FromForm]CategoryForCreateDto categoryDto)
         {
             var category = _mapper.Map<Category>(categoryDto);
 
             var result = _categoryService.CreateCategory(category);
-            if (!result.Success)
-            {
-                return BadRequest(result);
-            }
+
+            if (!result.Success) return BadRequest(result);
+
+            var createdCategory = _categoryService.GetByCategoryName(categoryDto.CategoryName);
+
+            if (!createdCategory.Success) return BadRequest(createdCategory.Message);
+            var uploadImage = _imageService.UploadCategoryImage(image, createdCategory.Data.Id);
+
+            if (!uploadImage.Success) return BadRequest(uploadImage.Message);
+
             return Ok(result);
         }
 

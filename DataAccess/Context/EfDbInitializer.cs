@@ -181,8 +181,24 @@ namespace DataAccess.Context
             });
 
             _db.SaveChanges();
-
         }
+
+        //public static void AddDefaultAdmin(ECommerceContext _db)
+        //{
+        //    if (_db.Users.Any())
+        //    {
+        //        return;
+        //    }
+
+        //    _db.Users.Add(new User
+        //    {
+        //        CreadtedAt = DateTime.Now,
+        //        DateOfBirth = DateTime.Now,
+        //        Email = "admin@ecommerce.com",
+        //        FirstName = "Admin",
+        //        LastName = "Admin",
+        //    })
+        //}
 
     }
 }

@@ -19,6 +19,11 @@ namespace Core.Entities.Concrete
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         public Gender Gender { get; set; }
+
+        public string RefreshToken { get; set; } = string.Empty;
+        public DateTime TokenExpire { get; set; }
+        public DateTime TokenCreated { get; set; }
+
         public DateTime CreadtedAt { get; set; } = DateTime.Now;
         public DateTime? UpdatedAt { get; set; }
         public byte[] PasswordSalt { get; set; }

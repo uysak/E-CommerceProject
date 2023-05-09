@@ -5,11 +5,15 @@ using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using Entities.DTOs;
+using Entity.Concrete;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IResult = Core.Utilities.Results.IResult;
 
 namespace Business.Concrete
 {
@@ -48,17 +52,17 @@ namespace Business.Concrete
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
-            if (userToCheck == null)
+            if (userToCheck == null || !userToCheck.Success)
             {
                 return new ErrorDataResult<User>(Messages.UserNotFound);
             }
 
-            if (HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt) == false)
+            if (HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt) == false)
             {
                 return new ErrorDataResult<User>(Messages.PasswordError);
             }
 
-            return new SuccessDataResult<User>(userToCheck, Messages.SuccessfulLogin);
+            return new SuccessDataResult<User>(userToCheck.Data, Messages.SuccessfulLogin);
         }
 
         public IResult UserExists(string email)
@@ -75,8 +79,39 @@ namespace Business.Concrete
             var claims = _userService.GetClaims(user);
             var roles = _userService.GetRoles(user);
 
-            var accessToken = _tokenHelper.CreateToken(user, claims,roles);
+            var accessToken = _tokenHelper.CreateToken(user, claims.Data,roles.Data);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
+
+        public IDataResult<RefreshToken> CreateRefreshToken()
+        {
+            var refreshToken = _tokenHelper.GenerateRefreshToken();
+            return new SuccessDataResult<RefreshToken>(refreshToken);
+        }
+        public IResult SetRefreshToken(RefreshToken refreshToken, HttpResponse response, User user)
+        {
+            _tokenHelper.SetRefreshToken(refreshToken, response, user);
+            return new SuccessResult();
+        }
+
+        public IDataResult<JObject> CreateTokens(User user, HttpResponse response)
+        {
+            var accessToken = CreateAccessToken(user).Data;
+            var refreshToken = _tokenHelper.GenerateRefreshToken();
+
+            _tokenHelper.SetRefreshToken(refreshToken, response, user); // refresh tokken adding cookie
+
+            JObject tokens = new JObject(
+                new JProperty("AccessToken", accessToken.Token),
+                new JProperty("RefreshToken", refreshToken.Token)
+                );
+
+            _userService.Update(user);
+
+            return new SuccessDataResult<JObject>(tokens);
+
+        }
+
+
     }
 }

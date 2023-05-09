@@ -12,7 +12,6 @@ namespace Entity.DTOs.CategoryDTOs
     public class CategoryForCreateDto : IDto
     {
         public string? CategoryName { get; set; }
-        public IFormFile? CategoryImg { get; set; }
     }
 
 }

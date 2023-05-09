@@ -10,6 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Core.Extensions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
+using System.Security.Cryptography;
+using Entity.Concrete;
 
 namespace Core.Utilities.Security.JWT
 {
@@ -66,6 +69,31 @@ namespace Core.Utilities.Security.JWT
             claims.AddRoles(operationClaims.Select(c => c.Name).ToArray());
             claims.AddRoles(roles.Select(c => c.Name).ToArray());
             return claims;
+        }
+
+        public RefreshToken GenerateRefreshToken()
+        {
+            var refreshToken = new RefreshToken
+            {
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                ExpireDate = DateTime.Now.AddDays(7),
+                CreatedDate = DateTime.Now
+            };
+            return refreshToken;
+        }
+        public void SetRefreshToken(RefreshToken newRefreshToken, HttpResponse response, User user)
+        {
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = newRefreshToken.ExpireDate
+            };
+
+            response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
+
+            user.RefreshToken = newRefreshToken.Token;
+            user.TokenCreated = newRefreshToken.CreatedDate;
+            user.TokenExpire = newRefreshToken.ExpireDate;
         }
     }
 }

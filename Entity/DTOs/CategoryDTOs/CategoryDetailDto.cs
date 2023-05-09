@@ -8,8 +8,8 @@ namespace Entity.DTOs.CategoryDTOs
 {
     public class CategoryDetailDto
     {
-        public int Id;
-        public string CategoryName;
-        public string CategoryImage;
+        public int Id { get; set; }
+        public string CategoryName { get; set; }
+        public string CategoryImage { get; set; }
     }
 }

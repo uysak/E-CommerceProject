@@ -135,7 +135,7 @@ namespace DataAccess.Context
             }
             _db.CategoryImages.Add(new CategoryImage
             {
-                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/Electronic/categoryElectronic.jpg",
+                ObjectUrl = "https://ecommerce-demo1.s3.eu-central-1.amazonaws.com/CategoryImages/1/categoryElectronic.jpg",
                 CategoryId = 1,
                 ObjectKey = "CategoryImages/1/categoryElectronic.jpg"
             });

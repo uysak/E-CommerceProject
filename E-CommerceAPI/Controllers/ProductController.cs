@@ -14,13 +14,15 @@ namespace E_CommerceAPI.Controllers
         IMapper _mapper;
         IProductService _productService;
         IImageService _imageService;
+        IProductCategoryService _productCategoryService;
         AwsS3Controller _awsS3Controller;
 
-        public ProductController(IProductService productService,IMapper mapper, IImageService imageService)
+        public ProductController(IProductService productService,IMapper mapper, IImageService imageService, IProductCategoryService productCategoryService)
         {
             _productService = productService;
             _mapper = mapper;
             _imageService = imageService;
+            _productCategoryService = productCategoryService;
         }
 
         [HttpGet]
@@ -46,6 +48,12 @@ namespace E_CommerceAPI.Controllers
             
             var createdProduct = _productService.GetByProductName(product.Name);
             if (!result.Success) return BadRequest(createdProduct);
+
+            var productCategory = _productCategoryService.Create(new ProductCategory
+            {
+                CategoryId = productDto.CategoryId,
+                ProductId = createdProduct.Data.Id
+            });
 
             var uploadImage = _imageService.UploadProductImage(images, createdProduct.Data.Id);
             if (!result.Success) return BadRequest(uploadImage);

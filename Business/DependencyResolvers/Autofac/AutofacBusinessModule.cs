@@ -33,6 +33,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CategoryImageManager>().As<ICategoryImageService>().SingleInstance();
             builder.RegisterType<EfCategoryImageDal>().As<ICategoryImageDal>().SingleInstance();
 
+            builder.RegisterType<ProductCategoryManager>().As<IProductCategoryService>().SingleInstance();
+            builder.RegisterType<EfProductCategoryDal>().As<IProductCategoryDal>().SingleInstance();
 
             builder.RegisterType<ImageManager>().As<IImageService>().SingleInstance();
             builder.RegisterType<StorageService>().As<IStorageService>().SingleInstance();

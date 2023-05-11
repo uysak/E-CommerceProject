@@ -31,5 +31,6 @@ namespace DataAccess.Context
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<CategoryImage> CategoryImages { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
     }
 }

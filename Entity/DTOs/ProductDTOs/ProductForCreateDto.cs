@@ -17,5 +17,7 @@ namespace Entity.DTOs.ProductDTOs
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public int CargoFirmId { get; set; }
+        public int CategoryId { get; set; }
+    
     }
 }

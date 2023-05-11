@@ -22,6 +22,7 @@ namespace DataAccess.Context
             AddDefaultCategoryImages(_db);
             AddDefaultOperationClaims(_db);
             AddDefaultRoles(_db);
+            AddDefaultCargoFirms(_db);
         }
 
         private static void AddDefaultOperationClaims(ECommerceContext _db)
@@ -183,22 +184,25 @@ namespace DataAccess.Context
             _db.SaveChanges();
         }
 
-        //public static void AddDefaultAdmin(ECommerceContext _db)
-        //{
-        //    if (_db.Users.Any())
-        //    {
-        //        return;
-        //    }
+        public static void AddDefaultCargoFirms(ECommerceContext _db)
+        {
+            if (_db.CargoFirms.Any()) return;
 
-        //    _db.Users.Add(new User
-        //    {
-        //        CreadtedAt = DateTime.Now,
-        //        DateOfBirth = DateTime.Now,
-        //        Email = "admin@ecommerce.com",
-        //        FirstName = "Admin",
-        //        LastName = "Admin",
-        //    })
-        //}
+            _db.CargoFirms.Add(new CargoFirm
+            {
+                FirmName = "Aras Kargo",
+                Img = "https://www.araskargo.com.tr/assets/images/aras-logo.svg",
+                SiteUrl = "https://www.araskargo.com.tr"
+            });
 
+            _db.CargoFirms.Add(new CargoFirm
+            {
+                FirmName = "MNG Kargo",
+                Img = "https://www.mngkargo.com.tr/assets/sprite/logo.svg",
+                SiteUrl = "https://www.araskargo.com.tr"
+            });
+
+            _db.SaveChanges();
+        }
     }
 }

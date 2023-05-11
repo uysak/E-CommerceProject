@@ -12,7 +12,7 @@ namespace Business.Abstract
     public interface ICategoryImageService
     {
         public IResult AddImage(CategoryImage categoryImage);
-        public IResult DeleteImage(string objectKey);
+        public IResult DeleteImage(int categoryId);
         public IDataResult<CategoryImage> GetCategoryImage(int categoryId);
     }
 }

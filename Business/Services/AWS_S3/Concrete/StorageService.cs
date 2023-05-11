@@ -54,7 +54,7 @@ namespace Business.Services.AWS_S3.Concrete
                         InputStream = obj.InputStream,
                         Key = obj.Prefix + obj.Name,
                         BucketName = obj.BucketName,
-                        CannedACL = S3CannedACL.NoACL,
+                        CannedACL = S3CannedACL.PublicRead,
                     };
 
                     // initialise client

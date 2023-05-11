@@ -74,7 +74,7 @@ namespace Business.Concrete
 
             var result = BusinessRules.Run(_validationHelper.CheckIfCategoryExists(category.CategoryName));
 
-            if (result != null)
+            if (!result.Success)
             {
                 return new ErrorResult(result.Message);
             }
@@ -86,7 +86,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run(_validationHelper.CheckIfCategoryNotExist(id));
 
-            if (result != null)
+            if (!result.Success)
             {
                 return new ErrorResult(result.Message);
             }

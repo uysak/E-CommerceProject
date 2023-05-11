@@ -54,7 +54,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run(_validationHelper.CheckIfProductExists(product.Name));
 
-            if (result != null)
+            if (!result.Success)
             {
                 return new ErrorResult(result.Message);
             }
@@ -67,7 +67,7 @@ namespace Business.Concrete
         {
             var result = BusinessRules.Run(_validationHelper.CheckIfProductNotExist(id));
 
-            if (result != null)
+            if (!result.Success)
             {
                 return new ErrorResult(result.Message);
             }

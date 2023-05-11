@@ -1,5 +1,6 @@
 ﻿using Amazon.S3.Model;
 using Business.Abstract;
+using Business.Constants;
 using Business.Helpers;
 using Business.Services.AWS_S3.Abstract;
 using Business.Services.AWS_S3.Entity;
@@ -169,15 +170,20 @@ namespace Business.Concrete
             return new SuccessDataResult<S3ResponseDto>(uploadResult);
         }
 
-        public IResult DeleteCategoryImage(string objectKey)
+        public IResult DeleteCategoryImage(int categoryId)
         {
-            var result = _storageService.DeleteFile(objectKey).Result;
+            var deletedImage = _categoryImageService.GetCategoryImage(categoryId);
+            if (!deletedImage.Success)
+            {
+                return new ErrorResult();
+            }
+            var result = _storageService.DeleteFile(deletedImage.Data.ObjectKey).Result;
 
             if (!result.Success)
             {
                 return new ErrorResult();
             }
-            result = _categoryImageService.DeleteImage(objectKey);
+            result = _categoryImageService.DeleteImage(categoryId);
 
             if (!result.Success)
             {

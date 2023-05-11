@@ -36,7 +36,7 @@ namespace E_CommerceAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCategory([FromForm]IFormFile image, [FromForm]CategoryForCreateDto categoryDto)
+        public IActionResult CreateCategory(IFormFile image, [FromForm]CategoryForCreateDto categoryDto)
         {
             var category = _mapper.Map<Category>(categoryDto);
 
@@ -57,6 +57,8 @@ namespace E_CommerceAPI.Controllers
         [HttpDelete]
         public IActionResult DeleteCategory(int id)
         {
+            var deleteImage = _imageService.DeleteCategoryImage(id);
+            if (!deleteImage.Success) return BadRequest(deleteImage);
             var result = _categoryService.DeleteCategory(id);
             if (!result.Success)
             {

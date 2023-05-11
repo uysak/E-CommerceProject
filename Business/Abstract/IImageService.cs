@@ -15,7 +15,7 @@ namespace Business.Abstract
         public IResult UploadProductImage(IFormFileCollection images, int productId);
         public IResult DeleteProductImage(string objectKey);
         public IResult UploadCategoryImage(IFormFile image, int categoryId);
-        public IResult DeleteCategoryImage(string objectKey);
+        public IResult DeleteCategoryImage(int categoryId);
 
     }
 }

@@ -29,9 +29,9 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        public IResult DeleteImage(string objectKey)
+        public IResult DeleteImage(int categoryId)
         {
-            _categoryImageDal.Delete(_categoryImageDal.Get(s => s.ObjectKey == objectKey));
+            _categoryImageDal.Delete(_categoryImageDal.Get(s => s.CategoryId == categoryId));
             return new SuccessResult();
         }
         public IDataResult<CategoryImage> GetCategoryImage(int categoryId)

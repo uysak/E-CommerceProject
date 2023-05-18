@@ -28,7 +28,7 @@ namespace E_CommerceAPI.Controllers
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-            var result = _productService.GetAllProducts();
+            var result = _productService.GetProductDetails();
             if (!result.Success)
             {
                 return NotFound();
@@ -49,11 +49,12 @@ namespace E_CommerceAPI.Controllers
             var createdProduct = _productService.GetByProductName(product.Name);
             if (!result.Success) return BadRequest(createdProduct);
 
-            var productCategory = _productCategoryService.Create(new ProductCategory
+            productDto.CategoryIdList.ForEach(c => _productCategoryService.Create(new ProductCategory
             {
-                CategoryId = productDto.CategoryId,
+                CategoryId = c,
                 ProductId = createdProduct.Data.Id
-            });
+            }));
+
 
             var uploadImage = _imageService.UploadProductImage(images, createdProduct.Data.Id);
             if (!result.Success) return BadRequest(uploadImage);

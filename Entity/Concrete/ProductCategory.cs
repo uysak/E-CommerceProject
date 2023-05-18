@@ -11,10 +11,18 @@ namespace Entity.Concrete
 {
     public class ProductCategory : IEntity
     {
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int ProductId { get; set; }
         public int CategoryId { get; set; }
+
+
+        [ForeignKey("ProductId")]
+        public Product Product { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
     }
 }

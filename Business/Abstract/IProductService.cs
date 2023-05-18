@@ -1,6 +1,7 @@
 ﻿using Core.Utilities.Results;
 using Entity.Concrete;
 using Entity.DTOs.CategoryDTOs;
+using Entity.DTOs.ProductDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,6 @@ namespace Business.Abstract
         public IResult CreateProduct(Product product);
         public IResult DeleteProduct(int productId);
         public IResult UpdateProduct(Product product);
-        
+        public IDataResult<List<ProductDetailDto>> GetProductDetails();
     }
 }

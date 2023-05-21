@@ -25,9 +25,10 @@ namespace Business.Concrete
         
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            var result = _productDal.GetProductDetail();
+            var result = _productDal.GetProductDetail(s => s.Category.Any(s => s.Id == 1));
             return new SuccessDataResult<List<ProductDetailDto>>(result);
         }
+
 
         public IDataResult<List<Product>> GetAllProducts()
         {

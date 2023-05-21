@@ -35,6 +35,7 @@ namespace E_CommerceAPI.Controllers
             return Ok(categories);
         }
 
+        [Authorize(Roles = "StoreModerator")]
         [HttpPost]
         public IActionResult CreateCategory(IFormFile image, [FromForm]CategoryForCreateDto categoryDto)
         {
@@ -54,6 +55,7 @@ namespace E_CommerceAPI.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "StoreModerator")]
         [HttpDelete]
         public IActionResult DeleteCategory(int id)
         {
@@ -68,6 +70,7 @@ namespace E_CommerceAPI.Controllers
         }
 
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public IActionResult UpdateCategory(int categoryId, CategoryForUpdateDto categoryDto)
         {

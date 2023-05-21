@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Entity.Concrete;
 using Entity.DTOs.ProductDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_CommerceAPI.Controllers
@@ -36,6 +37,7 @@ namespace E_CommerceAPI.Controllers
 
             return Ok(result);
         }
+        [Authorize(Roles = "StoreModerator")]
         [HttpPost]
         public IActionResult CreateProduct([FromForm]ProductForCreateDto productDto,IFormFileCollection images)
         {
